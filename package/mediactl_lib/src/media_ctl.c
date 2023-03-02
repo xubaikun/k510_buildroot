@@ -1195,9 +1195,9 @@ int mediactl_hw_set_ae(enum isp_pipeline_e pipeline)
 			v4l2_subdev_close(sensor0);
 			return ret;
 		}
-
 		control_s.id = V4L2_CID_GAIN;
 		control_s.value = ae_stats.ae_agco;
+		
 		ret = ioctl(sensor0->fd,VIDIOC_S_CTRL,&control_s);
 		if (ret < 0)
 		{
@@ -1558,6 +1558,7 @@ void run_all_ae_video(void *info)
         fprintf(stderr, "enable R2K AE\n");
     }
 
+
     int max_fd = (fd[0] > fd[1] ? fd[0] : fd[1]) + 1;
     while (1) {
         /*
@@ -1573,7 +1574,7 @@ void run_all_ae_video(void *info)
          */
 
         /* Timeout. */
-        tv.tv_sec = 2;
+        tv.tv_sec = 5;
         tv.tv_usec = 0;
         fd_set rfds = fds;
         r = select(max_fd, &rfds, NULL, NULL, &tv);
